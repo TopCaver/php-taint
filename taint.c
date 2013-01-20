@@ -1661,7 +1661,7 @@ static void php_taint_mcall_check(ZEND_OPCODE_HANDLER_ARGS, zend_op *opline, zen
 #endif
 				break;
 			}
-
+			
 			if (strncmp("sqlitedatabase", class_name, cname_len) == 0) {
 				if (strncmp("query", fname, len) == 0
 						|| strncmp("singlequery", fname, len) == 0) {
@@ -1692,6 +1692,17 @@ static void php_taint_mcall_check(ZEND_OPCODE_HANDLER_ARGS, zend_op *opline, zen
 					}
 				}
 #endif
+				break;
+			}
+
+			if (strncmp("DOMElement",class_name,cname_len)==0){
+				if (strncmp("setAttribute",fname,len)==0){
+					zval *el;
+					el = *((zval **)(p - arg_count+1));
+					if(el && IS_STRING == Z_TYPE_P(el) && PHP_TAINT_POSSIBLE(el)){
+						php_taint_error(NULL TSRMLS_CC, "DOM setAttribute containts data that might be tainted");
+					}
+				}
 				break;
 			}
 		} while (0);
