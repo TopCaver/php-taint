@@ -13,11 +13,11 @@
   <email>laruence@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-02-26</date>
- <time>14:08:36</time>
+ <date>2013-03-22</date>
+ <time>23:44:39</time>
  <version>
-  <release>1.2.1</release>
-  <api>1.2.1</api>
+  <release>1.2.2</release>
+  <api>1.2.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -25,7 +25,8 @@
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes> 
-  - release stable version
+  - Fixed issue #4 (wrong op fetched)
+  - Fixed issue #3 (zend_error_noreturn undefined)
  </notes>
  <contents> 
   <dir name="/"> 
@@ -50,6 +51,7 @@
     <file name="bug61163.phpt" role="test" />
     <file name="bug61816.phpt" role="test" />
     <file name="bug63123.phpt" role="test" />
+    <file name="issue_004.phpt" role="test" />
    </dir>
   </dir> 
  </contents> 
@@ -57,7 +59,7 @@
   <required> 
    <php> 
     <min>5.2.0</min> 
-    <max>5.4.0</max>
+    <max>5.4.99</max>
    </php> 
    <pearinstaller> 
     <min>1.4.0</min> 
@@ -67,6 +69,23 @@
  <providesextension>taint</providesextension>
  <extsrcrelease />
  <changelog> 
+  <release> 
+   <date>2013-03-22</date> 
+   <version> 
+    <release>1.2.2</release> 
+    <api>1.2.2</api> 
+   </version> 
+   <stability> 
+    <release>beta</release> 
+    <api>beta</api> 
+   </stability> 
+   <license uri="http://www.php.net/license">PHP License</license> 
+   <notes> 
+    - Fixed issue #4 (wrong op fetched)
+    - Fixed issue #3 (zend_error_noreturn undefined)
+   </notes> 
+  </release> 
+
   <release> 
    <date>2013-02-26</date> 
    <version> 
@@ -82,7 +101,6 @@
     - release stable version
    </notes> 
   </release> 
-
   <release> 
    <date>2012-11-06</date> 
    <version> 
