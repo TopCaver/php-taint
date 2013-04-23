@@ -97,8 +97,8 @@ extern zend_module_entry taint_module_entry;
 #define INIT_PZVAL_COPY(z,v) \
 	(z)->value = (v)->value; \
 	Z_TYPE_P(z) = Z_TYPE_P(v); \
-	(z)->refcount = 1; \
-	(z)->is_ref = 0;
+	Z_SET_REFCOUNT(z,1); \
+	Z_UNSET_ISREF_P(z);
 #endif
 
 #ifndef MAKE_REAL_ZVAL_PTR
