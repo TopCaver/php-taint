@@ -170,6 +170,7 @@ static void php_taint_get_cv_address(zend_compiled_variable *cv, zval ***ptr, te
 	zval *new_zval = &EG(uninitialized_zval);
 
 	Z_ADDREF_P(new_zval);
+	//There is a segment fault trap, Because "EG(active_symbol_table)" maybe failed.
 	zend_hash_quick_update(EG(active_symbol_table), cv->name, cv->name_len+1, cv->hash_value, &new_zval, sizeof(zval *), (void **)ptr);
 }
 /* }}} */
@@ -282,7 +283,18 @@ static zval **php_taint_get_zval_ptr_ptr_cv(znode *node, temp_variable *Ts, int 
 					zend_error(E_NOTICE, "Undefined variable: %s", cv->name);
 					/* break missing intentionally */
 				case BP_VAR_W:
-					php_taint_get_cv_address(cv, ptr, Ts TSRMLS_CC);
+					//php_taint_get_cv_address(cv, ptr, Ts TSRMLS_CC);
+					
+					//fix segment fault by zhangbo
+					//segment fault in php_taint_get_cv_address() above.
+					Z_ADDREF_P(&EG(uninitialized_zval));
+					if(!EG(active_symbol_table)){
+						*ptr = (zval**)EG(current_execute_data)->CVs + (EG(active_op_array)->last_var + node->u.var);
+						**ptr = &EG(uninitialized_zval);
+					}else{
+						zend_hash_quick_update(EG(active_symbol_table), cv->name, cv->name_len+1, cv->hash_value, &EG(uninitialized_zval_ptr), sizeof(zval *), (void **)ptr);
+					}
+
 					break;
 			}
 		}
